@@ -97,13 +97,14 @@ function App() {
   const [comments, setComments] = useState([])
 
 
-  const handleSubmit = e => { 
+  const handleSubmit = e => {
+    const userUrl = url.match(/(?:youtube(?:-nocookie)?\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/)[1];
     e.preventDefault() 
     setComments([]) // Clear old comment list
     youtube.get('/commentThreads', {
       params: {
         order: 'relevance',
-        videoId: url
+        videoId: userUrl
       }
     }).then(response => {
       let items = response.data.items
