@@ -32,9 +32,9 @@ app.get('/perspective', (req,res) => {
 app.get('/google', (req,res) => {
     const options = {
         method: 'GET',
-        url: 'https://www.googleapis.com/auth/youtube.force-ssl',
+        url: 'https://developers.google.com/youtube/v3',
         headers: {
-            'x-rapidapi-host' : 'www.googleapis.com',
+            'x-rapidapi-host' : 'developers.google.com',
             'x-rapidapi-key': ProcessingInstruction.env.REACT_APP_RAPID_API_KEY
         }
     }
