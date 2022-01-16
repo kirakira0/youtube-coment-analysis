@@ -8,19 +8,31 @@
 }
 
 .leftNavbar {
-  height: 100%;
-  width: 20%;
+  /* height: 100%; */
+  padding: 5%;
+  width: 30%;
+  height: 100vh;
   /* position: sticky;  */
   /* z-index: 1; */
   /* top: 0;
   left: 0; */
-  background-color: #616bfb;
+  background-color: #FAF9F6;
   overflow: hidden;
   padding-top: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: justify;
+
   
+}
+
+.main {
+  padding: 3%;
+  padding-left: 7%;
+}
+
+.paragraph {
 }
 
 .graphs {
