@@ -2,6 +2,22 @@
   text-align: center;
 }
 
+.leftNavbar {
+  height: 100%;
+  width: 20%;
+  position: sticky; 
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: #616bfb;
+  overflow: hidden;
+  padding-top: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

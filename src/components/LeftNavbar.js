@@ -1,26 +1,16 @@
-import React from 'react';
+import { style } from '@mui/system';
+import { type } from '@testing-library/user-event/dist/type';
+import React, {useState} from 'react';
 
 // class LeftNavbar extends React.Component {
-const LeftNavbar = () => {
+const LeftNavbar = (props) => {
   return (
-    <header>
-      <nav>
-        <ul>
-          <li>
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">About</a>
-          </li>
-          <li>
-            <a href="#">FAQ</a>
-          </li>
-          <li>
-            <a href="#">Contact</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <div className="leftNavbar" style={{width: props.width}}>
+      <a href="#">Home</a>
+      <a href="#">About</a>
+      <a href="#">FAQ</a>
+      <a href="#">Contact</a>
+    </div>
   );
 };
 export default LeftNavbar;
