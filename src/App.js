@@ -8,6 +8,7 @@ import LeftNavbar from './components/LeftNavbar'
 
 import Chart from "react-apexcharts";
 import Navbar from './components/LeftNavbar';
+import { Input } from '@mui/material';
 
 export const PERSPECTIVE_API_URL =
 "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=" + process.env.REACT_APP_GOOGLE_API_KEY
@@ -25,6 +26,7 @@ function App() {
   const [sexuallyExplicitScore, setSexuallyExplicitScore] = useState([])
   const [identityAttackScore, setIdentityAttackScore] = useState([])
   const [threatScore, setThreatScore] = useState([])
+  let type = 0
 
   const checkComment = comment => {
     axios
@@ -94,6 +96,14 @@ function App() {
   const [comments, setComments] = useState([])
 
 
+  // const handleRadio = e => {
+  //   e.preventDefault
+  //   console.log("OK")
+
+  // }
+
+
+
   const handleSubmit = e => {
     
     e.preventDefault() 
@@ -130,6 +140,29 @@ function App() {
     return <li key={comment}>{comment}</li>;
   })
 
+
+  const [favorite, setFavorite] = React.useState('dog');
+
+  const handleCatChange = () => {
+    setFavorite('cat');
+  };
+
+  const handleDogChange = () => {
+    setFavorite('dog');
+  };
+
+
+  const [gender, setGender] = React.useState('male');
+
+  const handleChange = (event) => {
+     setGender(event.target.value)
+     console.log(event.target.value)
+   }
+ 
+   const resetRadioState = () => {
+     setGender('');
+   }
+
   return (
     <div className="App">
       <LeftNavbar />
@@ -138,7 +171,7 @@ function App() {
         <Chart 
           options={options} 
           series={[
-            toxicityScore[Math.floor(numComments/2)] * 100,
+            // toxicityScore[Math.floor(numComments/2)] * 100,
             insultScore[Math.floor(numComments/2)] * 100,
             sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
             identityAttackScore[Math.floor(numComments/2)] * 100,
@@ -153,7 +186,7 @@ function App() {
         <Chart 
           options={options} 
           series={[
-            toxicitySum/numComments * 100,
+            // toxicitySum/numComments * 100,
             insultSum/numComments * 100,
             sexuallyExplicitSum/numComments * 100,
             identityAttackSum/numComments * 100,
@@ -170,6 +203,25 @@ function App() {
             <label>
               Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
             </label>
+            <form>
+            <p>Gender</p>
+            <div>
+              <input
+                type="radio"
+                value="male"
+                checked={gender === 'male'}
+                onChange={handleChange}
+              /> Male
+            </div>
+            <div>
+              <input
+                type="radio"
+                value="female"
+                checked={gender === 'female'}
+                onChange={handleChange}
+              /> Female
+            </div>
+          </form>
             <input type="submit" value="Submit"/>
           </div>
         </form>
