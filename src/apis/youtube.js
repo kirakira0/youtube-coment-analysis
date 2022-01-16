@@ -6,7 +6,7 @@ export default axios.create({
     params: {
         part: 'snippet',
         // videoId: 'OSI6JJaz35I',
-        maxResults: 5,
+        maxResults: 100,
         key: API_KEY
     }
 })
