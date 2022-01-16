@@ -134,12 +134,14 @@ function App() {
       <div className="page">
         <LeftNavbar />
         <div className = "main">
-          <form onSubmit={handleSubmit}>
-            <h1>URL Form</h1>
+          <form className="form" onSubmit={handleSubmit}>
+            <h4>Paste Your YouTube Video Link Here </h4>
+            <p>SentiCom uses Google's YouTube API to fetch publicly available comment data, Perspective to run sentiment and toxicity analysis on those comments, and ApexCharts to present a graphical representation of the data.</p>
             <div className='ui-form'>
               <label>
-                Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
+                <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
               </label>
+              <p></p>
               <input type="submit" value="Submit"/>
             </div>
           </form>
@@ -150,17 +152,17 @@ function App() {
                 <Chart 
                   options={options} 
                   series={[
-                    insultScore[Math.floor(numComments/2)] * 100,
-                    sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
-                    identityAttackScore[Math.floor(numComments/2)] * 100,
-                    threatScore[Math.floor(numComments/2)] * 100,
+                    Math.floor(insultScore[Math.floor(numComments/2)] * 100),
+                    Math.floor(sexuallyExplicitScore[Math.floor(numComments/2)] * 100),
+                    Math.floor(identityAttackScore[Math.floor(numComments/2)] * 100),
+                    Math.floor(threatScore[Math.floor(numComments/2)] * 100),
                   ]} 
                   type="radialBar" 
                   height={350} 
                 />
               </div>
               <h4>Comment Section Toxicity: </h4> 
-              <h3>{toxicityScore[Math.floor(numComments/2)] * 100}</h3>    
+              <h3>{Math.floor(toxicityScore[Math.floor(numComments/2)] * 100)}</h3>    
             </div>
             <div className = 'mean'>
               <h2>Mean Scores</h2>
@@ -168,17 +170,17 @@ function App() {
                 <Chart 
                   options={options} 
                   series={[
-                    insultSum/numComments * 100,
-                    sexuallyExplicitSum/numComments * 100,
-                    identityAttackSum/numComments * 100,
-                    threatSum/numComments * 100
+                    Math.floor(insultSum/numComments * 100),
+                    Math.floor(sexuallyExplicitSum/numComments * 100),
+                    Math.floor(identityAttackSum/numComments * 100),
+                    Math.floor(threatSum/numComments * 100)
                   ]} 
                   type="radialBar" 
                   height={350} 
                 />
               </div>
               <h4>Comment Section Toxicity: </h4>
-              <h3>{toxicitySum/numComments * 100}</h3>         
+              <h3>{Math.floor(toxicitySum/numComments * 100)}</h3>         
             </div>
           </div>
         </div>

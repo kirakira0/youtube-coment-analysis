@@ -2,15 +2,23 @@
   text-align: center;
 }
 
+* {
+  font-family: Helvetica, sans-serif;
+ }
+
 .page {
   display: flex;
   flex-direction: row;
 }
 
+.form {
+  width: 80%;
+}
+
 .leftNavbar {
   /* height: 100%; */
   padding: 5%;
-  width: 30%;
+  width: 60%;
   height: 100vh;
   /* position: sticky;  */
   /* z-index: 1; */
@@ -28,7 +36,7 @@
 }
 
 .main {
-  padding: 3%;
+  padding: 2%;
   padding-left: 7%;
 }
 
