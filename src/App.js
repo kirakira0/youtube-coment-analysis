@@ -1,10 +1,10 @@
 import './App.css';
-import { useState } from 'react';
+import { useState } from 'react'
 import youtube from './apis/youtube'
-import React from 'react';
+import React from 'react'
 import axios from 'axios'
 
-import ExpenseEntryItem from './components/leftBanner';
+import LeftBanner from './components/LeftBanner'
 
 import Chart from "react-apexcharts";
 
@@ -131,7 +131,7 @@ function App() {
 
   return (
     <div className="App">
-      <ExpenseEntryItem />
+      <LeftBanner />
       <p>Median</p>
       <div id="chart">
         <Chart 
