@@ -4,9 +4,10 @@ import youtube from './apis/youtube'
 import React from 'react'
 import axios from 'axios'
 
-import LeftBanner from './components/LeftBanner'
+import LeftNavbar from './components/LeftNavbar'
 
 import Chart from "react-apexcharts";
+import Navbar from './components/LeftNavbar';
 
 export const PERSPECTIVE_API_URL =
 "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=" + process.env.REACT_APP_GOOGLE_API_KEY
@@ -131,7 +132,7 @@ function App() {
 
   return (
     <div className="App">
-      <LeftBanner />
+      <LeftNavbar />
       <p>Median</p>
       <div id="chart">
         <Chart 
