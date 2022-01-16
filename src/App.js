@@ -9,7 +9,8 @@ export const PERSPECTIVE_API_URL =
 
 function App() {
 
-  const [toxicityScore, setToxicityScore] = 0
+  const [numComments, setNumComments] = useState(0)
+  const [toxicityScore, setToxicityScore] = useState(0)
 
 
   const checkComment = comment => {
@@ -28,7 +29,10 @@ function App() {
         }
       })
       .then(res => {
-        console.log(res.data.attributeScores.TOXICITY.summaryScore.value)
+        // ADD TO SCORES
+        let toxicity = res.data.attributeScores.TOXICITY.summaryScore.value
+        // console.log(toxicity)
+        setToxicityScore(toxicityScore => toxicityScore + toxicity)
       })
       .catch(() => {
         // The perspective request failed, put some defensive logic here!
@@ -52,6 +56,7 @@ function App() {
       let items = response.data.items
       console.log(response)
       console.log('Number of comments', items.length)
+      setNumComments(items.length)
       items.forEach(item => {
         // For each comment
         const commentText = item.snippet.topLevelComment.snippet.textDisplay
@@ -59,6 +64,10 @@ function App() {
 
         setComments(comments => [...comments, commentText])
       })
+      // AFTER ALL SCORES ARE ADDED, DIVIDE TO GET AVERAGES 
+      // console.log("AVERAGE TOXICITY SCORE = " + toxicityScore/numComments)
+      console.log(toxicityScore)
+
     })
   }
 
@@ -72,7 +81,9 @@ function App() {
       <header className="App-header">
         <p>
           Welcome to YouTube comment section analysis 
-        </p>
+        </p> 
+        <p>Average Toxicity Score: </p>
+        {toxicityScore/numComments}
       </header>
       <div className='container'>
         <form onSubmit={handleSubmit}>
