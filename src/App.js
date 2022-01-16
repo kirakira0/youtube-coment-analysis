@@ -8,7 +8,6 @@ import LeftNavbar from './components/LeftNavbar'
 
 import Chart from "react-apexcharts";
 import Navbar from './components/LeftNavbar';
-import { Input } from '@mui/material';
 
 export const PERSPECTIVE_API_URL =
 "https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=" + process.env.REACT_APP_GOOGLE_API_KEY
@@ -26,7 +25,9 @@ function App() {
   const [sexuallyExplicitScore, setSexuallyExplicitScore] = useState([])
   const [identityAttackScore, setIdentityAttackScore] = useState([])
   const [threatScore, setThreatScore] = useState([])
-  let type = 0
+  const [metric, setMetric] = useState('median')
+  const [series, setSeries] = useState([0, 0, 0, 0])
+  const [overallToxicity, setOverallToxicity] = useState(0.0)
 
   const checkComment = comment => {
     axios
@@ -89,23 +90,14 @@ function App() {
         }
       }
     },
-    labels: ['Toxicity', 'Insult', 'Sexual Content', 'Identity Attack', 'Threat'],
+    labels: ['Insult', 'Sexual Content', 'Identity Attack', 'Threat'],
   }
 
   const [url, setUrl] = useState("")
   const [comments, setComments] = useState([])
 
 
-  // const handleRadio = e => {
-  //   e.preventDefault
-  //   console.log("OK")
-
-  // }
-
-
-
-  const handleSubmit = e => {
-    
+  const handleSubmit = e => { 
     e.preventDefault() 
     setComments([]) // Clear old comment list
     youtube.get('/commentThreads', {
@@ -134,59 +126,44 @@ function App() {
       setThreatScore(threatScore => threatScore.sort())
 
     })
-
-    fillGraph()
-
   }
-
-  const commentList = comments.map((comment)=>{
-
-    return <li key={comment}>{comment}</li>;
-  })
-
-
-  const [metric, setMetric] = useState('median')
-  const [series, setSeries] = useState([0, 0, 0, 0])
-
-  const handleRadio = (event) => {
-     setMetric(event.target.value)
-     console.log(event.target.value)
-     fillGraph()
-  }
-
-  function fillGraph() {
-     if (metric === "median") {
-      setSeries([
-        // toxicityScore[Math.floor(numComments/2)] * 100,
-        insultScore[Math.floor(numComments/2)] * 100,
-        sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
-        identityAttackScore[Math.floor(numComments/2)] * 100,
-        threatScore[Math.floor(numComments/2)] * 100,
-      ])
-     }
-     else {
-       setSeries([
-        // toxicitySum/numComments * 100,
-        insultSum/numComments * 100,
-        sexuallyExplicitSum/numComments * 100,
-        identityAttackSum/numComments * 100,
-        threatSum/numComments * 100
-      ])
-     }
-
-     
-   }
 
   return (
     <div className="App">
       <LeftNavbar />
-      <div id="chart">
-        <Chart 
-          options={options} 
-          series={series} 
-          type="radialBar" 
-          height={350} 
-        />
+      <div>
+        <h2>Median Scores</h2>
+        <div id="chart">
+          <Chart 
+            options={options} 
+            series={[
+              insultScore[Math.floor(numComments/2)] * 100,
+              sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
+              identityAttackScore[Math.floor(numComments/2)] * 100,
+              threatScore[Math.floor(numComments/2)] * 100,
+            ]} 
+            type="radialBar" 
+            height={350} 
+          />
+        </div>
+        <h3>Comment Section Toxicity</h3>
+        {toxicityScore[Math.floor(numComments/2)] * 100}
+        <h2>Mean Scores</h2>
+        <div id="chart">
+          <Chart 
+            options={options} 
+            series={[
+              insultSum/numComments * 100,
+              sexuallyExplicitSum/numComments * 100,
+              identityAttackSum/numComments * 100,
+              threatSum/numComments * 100
+            ]} 
+            type="radialBar" 
+            height={350} 
+          />
+        </div>
+        <h3>Comment Section Toxicity</h3>
+        {toxicitySum/numComments * 100}
       </div>
       <div className='container'>
         <form onSubmit={handleSubmit}>
@@ -195,17 +172,15 @@ function App() {
             <label>
               Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
             </label>
-            <div>
+            {/* <div>
             <p>Metric</p>
               <input type="radio" value="median" checked={metric === 'median'} onChange={handleRadio}/> Median
-              <input type="radio" value="mean" checked={metric === 'mean'} onChange={handleRadio}
-              /> Mean
-            </div>
+              <input type="radio" value="mean" checked={metric === 'mean'} onChange={handleRadio}/> Mean
+            </div> */}
             <input type="submit" value="Submit"/>
           </div>
         </form>
       </div>
-      <ul>{commentList}</ul>
       <footer>
         <p>footer</p>
       </footer>
