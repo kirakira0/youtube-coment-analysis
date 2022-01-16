@@ -7,24 +7,28 @@ import youtube from './apis/youtube'
 function App() {
 
   const [url, setUrl] = useState("")
+  const [comments, setComments] = useState([])
 
   const handleSubmit = e => {
-    e.preventDefault()
-    
-    console.log(url)
+    e.preventDefault() 
+    setComments([]) // Clear old comment list
     youtube.get('/commentThreads', {
       params: {
+        order: 'relevance',
         videoId: url
       }
     }).then(response => {
       let items = response.data.items
-      console.log(response.data)
       items.forEach(item => {
-        console.log(item.snippet.topLevelComment.snippet.textDisplay)
+        const commentText = item.snippet.topLevelComment.snippet.textDisplay
+        setComments(comments => [...comments, commentText])
       })
     })
-
   }
+
+  const commentList = comments.map((comment)=>{
+    return <li>{comment}</li>;
+  })
 
   return (
     <div className="App">
@@ -43,8 +47,8 @@ function App() {
             <input type="submit" value="Submit"/>
           </div>
         </form>
-
       </div>
+      <ul>{commentList}</ul>
       <footer>
         <p>footer</p>
       </footer>
