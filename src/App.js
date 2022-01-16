@@ -1,23 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
 
 function App() {
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          Welcome to YouTube comment section analysis 
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
       </header>
+      <div className='container'>
+        <form>
+          <h1>URL Form</h1>
+          <div className='ui-form'>
+            <label>
+              URL: <input type="text" url="url" placeholder='Video URL'/>
+            </label>
+            <input type="submit" value="Submit"/>
+          </div>
+        </form>
+
+      </div>
+      <footer>
+        <p>footer</p>
+      </footer>
     </div>
   );
 }
