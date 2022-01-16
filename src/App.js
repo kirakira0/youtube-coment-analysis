@@ -132,7 +132,11 @@ function App() {
       setSexuallyExplicitScore(sexuallyExlicitScore => sexuallyExlicitScore.sort())
       setIdentityAttackScore(identityAttackScore => identityAttackScore.sort())
       setThreatScore(threatScore => threatScore.sort())
+
     })
+
+    fillGraph()
+
   }
 
   const commentList = comments.map((comment)=>{
@@ -141,57 +145,45 @@ function App() {
   })
 
 
-  const [favorite, setFavorite] = React.useState('dog');
+  const [metric, setMetric] = useState('median')
+  const [series, setSeries] = useState([0, 0, 0, 0])
 
-  const handleCatChange = () => {
-    setFavorite('cat');
-  };
-
-  const handleDogChange = () => {
-    setFavorite('dog');
-  };
-
-
-  const [gender, setGender] = React.useState('male');
-
-  const handleChange = (event) => {
-     setGender(event.target.value)
+  const handleRadio = (event) => {
+     setMetric(event.target.value)
      console.log(event.target.value)
-   }
- 
-   const resetRadioState = () => {
-     setGender('');
+     fillGraph()
+  }
+
+  function fillGraph() {
+     if (metric === "median") {
+      setSeries([
+        // toxicityScore[Math.floor(numComments/2)] * 100,
+        insultScore[Math.floor(numComments/2)] * 100,
+        sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
+        identityAttackScore[Math.floor(numComments/2)] * 100,
+        threatScore[Math.floor(numComments/2)] * 100,
+      ])
+     }
+     else {
+       setSeries([
+        // toxicitySum/numComments * 100,
+        insultSum/numComments * 100,
+        sexuallyExplicitSum/numComments * 100,
+        identityAttackSum/numComments * 100,
+        threatSum/numComments * 100
+      ])
+     }
+
+     
    }
 
   return (
     <div className="App">
       <LeftNavbar />
-      <p>Median</p>
       <div id="chart">
         <Chart 
           options={options} 
-          series={[
-            // toxicityScore[Math.floor(numComments/2)] * 100,
-            insultScore[Math.floor(numComments/2)] * 100,
-            sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
-            identityAttackScore[Math.floor(numComments/2)] * 100,
-            threatScore[Math.floor(numComments/2)] * 100,
-          ]} 
-          type="radialBar" 
-          height={350} 
-        />
-      </div>
-      <p>Mean</p>
-      <div id="chart">
-        <Chart 
-          options={options} 
-          series={[
-            // toxicitySum/numComments * 100,
-            insultSum/numComments * 100,
-            sexuallyExplicitSum/numComments * 100,
-            identityAttackSum/numComments * 100,
-            threatSum/numComments * 100
-          ]} 
+          series={series} 
           type="radialBar" 
           height={350} 
         />
@@ -203,25 +195,12 @@ function App() {
             <label>
               Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
             </label>
-            <form>
-            <p>Gender</p>
             <div>
-              <input
-                type="radio"
-                value="male"
-                checked={gender === 'male'}
-                onChange={handleChange}
-              /> Male
+            <p>Metric</p>
+              <input type="radio" value="median" checked={metric === 'median'} onChange={handleRadio}/> Median
+              <input type="radio" value="mean" checked={metric === 'mean'} onChange={handleRadio}
+              /> Mean
             </div>
-            <div>
-              <input
-                type="radio"
-                value="female"
-                checked={gender === 'female'}
-                onChange={handleChange}
-              /> Female
-            </div>
-          </form>
             <input type="submit" value="Submit"/>
           </div>
         </form>
