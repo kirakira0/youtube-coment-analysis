@@ -2,7 +2,24 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 
+import youtube from './apis/youtube'
+
 function App() {
+
+  const handleSubmit = e => {
+    e.preventDefault()
+    console.log('hi')
+    youtube.get('/commentThreads', {
+      params: {
+        // q: 'cats'
+        videoId: '6tPTrgGptU0'
+
+      }
+    }).then(response => {
+      console.log(response)
+    })
+
+  }
 
   return (
     <div className="App">
@@ -12,7 +29,7 @@ function App() {
         </p>
       </header>
       <div className='container'>
-        <form>
+        <form onSubmit={handleSubmit}>
           <h1>URL Form</h1>
           <div className='ui-form'>
             <label>
