@@ -131,60 +131,58 @@ function App() {
 
   return (
     <div className="App">
-      <LeftNavbar />
-      <div>
-        <h2>Median Scores</h2>
-        <div id="chart">
-          <Chart 
-            options={options} 
-            series={[
-              insultScore[Math.floor(numComments/2)] * 100,
-              sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
-              identityAttackScore[Math.floor(numComments/2)] * 100,
-              threatScore[Math.floor(numComments/2)] * 100,
-            ]} 
-            type="radialBar" 
-            height={350} 
-          />
-        </div>
-        <h3>Comment Section Toxicity</h3>
-        {toxicityScore[Math.floor(numComments/2)] * 100}
-        <h2>Mean Scores</h2>
-        <div id="chart">
-          <Chart 
-            options={options} 
-            series={[
-              insultSum/numComments * 100,
-              sexuallyExplicitSum/numComments * 100,
-              identityAttackSum/numComments * 100,
-              threatSum/numComments * 100
-            ]} 
-            type="radialBar" 
-            height={350} 
-          />
-        </div>
-        <h3>Comment Section Toxicity</h3>
-        {toxicitySum/numComments * 100}
-      </div>
-      <div className='container'>
-        <form onSubmit={handleSubmit}>
-          <h1>URL Form</h1>
-          <div className='ui-form'>
-            <label>
-              Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
-            </label>
-            {/* <div>
-            <p>Metric</p>
-              <input type="radio" value="median" checked={metric === 'median'} onChange={handleRadio}/> Median
-              <input type="radio" value="mean" checked={metric === 'mean'} onChange={handleRadio}/> Mean
-            </div> */}
-            <input type="submit" value="Submit"/>
+      <div className="page">
+        <LeftNavbar />
+        <div className = "main">
+          <form onSubmit={handleSubmit}>
+            <h1>URL Form</h1>
+            <div className='ui-form'>
+              <label>
+                Video ID: <input type="text" url="url" placeholder='Video URL' onChange={e => setUrl(e.target.value)}/>
+              </label>
+              <input type="submit" value="Submit"/>
+            </div>
+          </form>
+          <div className='graphs'>
+            <div className = 'median'>
+              <h2>Median Scores</h2>
+              <div id="chart">
+                <Chart 
+                  options={options} 
+                  series={[
+                    insultScore[Math.floor(numComments/2)] * 100,
+                    sexuallyExplicitScore[Math.floor(numComments/2)] * 100,
+                    identityAttackScore[Math.floor(numComments/2)] * 100,
+                    threatScore[Math.floor(numComments/2)] * 100,
+                  ]} 
+                  type="radialBar" 
+                  height={350} 
+                />
+              </div>
+              <h4>Comment Section Toxicity: </h4> 
+              <h3>{toxicityScore[Math.floor(numComments/2)] * 100}</h3>    
+            </div>
+            <div className = 'mean'>
+              <h2>Mean Scores</h2>
+              <div id="chart">
+                <Chart 
+                  options={options} 
+                  series={[
+                    insultSum/numComments * 100,
+                    sexuallyExplicitSum/numComments * 100,
+                    identityAttackSum/numComments * 100,
+                    threatSum/numComments * 100
+                  ]} 
+                  type="radialBar" 
+                  height={350} 
+                />
+              </div>
+              <h4>Comment Section Toxicity: </h4>
+              <h3>{toxicitySum/numComments * 100}</h3>         
+            </div>
           </div>
-        </form>
+        </div>
       </div>
-      <footer>
-        <p>footer</p>
-      </footer>
     </div>
   );
 }
