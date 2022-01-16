@@ -4,6 +4,8 @@ import youtube from './apis/youtube'
 import React from 'react';
 import axios from 'axios'
 
+import ExpenseEntryItem from './components/leftBanner';
+
 import Chart from "react-apexcharts";
 
 export const PERSPECTIVE_API_URL =
@@ -22,8 +24,6 @@ function App() {
   const [sexuallyExplicitScore, setSexuallyExplicitScore] = useState([])
   const [identityAttackScore, setIdentityAttackScore] = useState([])
   const [threatScore, setThreatScore] = useState([])
-
-  const series = []
 
   const checkComment = comment => {
     axios
@@ -48,12 +48,14 @@ function App() {
         let identityAttack = res.data.attributeScores.IDENTITY_ATTACK.summaryScore.value
         let threat = res.data.attributeScores.THREAT.summaryScore.value
 
-        setToxicitySum(setToxicitySum => setToxicitySum + toxicity)
-        setInsultSum(setInsultSum => setInsultSum + insult)
-        setSexuallyExplicitSum(setSexuallyExplicitSum => setSexuallyExplicitSum + sexuallyExplicit)
-        setIdentityAttackSum(setIdentityAttackSum => identityAttackScore + identityAttack)
-        setThreatSum(setThreatSum => setThreatSum + threat)
+        // keep track of sum
+        setToxicitySum(toxicitySum => toxicitySum + toxicity)
+        setInsultSum(insultSum => insultSum + insult)
+        setSexuallyExplicitSum(sexuallyExplicitSum => sexuallyExplicitSum + sexuallyExplicit)
+        setIdentityAttackSum(identityAttackSum => identityAttackSum + identityAttack)
+        setThreatSum(threatSum => threatSum + threat)
         
+        // add to list
         setToxicityScore(toxicityScore => [...toxicityScore, toxicity])
         setInsultScore(insultScore => [...insultScore,  insult])
         setSexuallyExplicitScore(sexuallyExplicitScore => [...sexuallyExplicitScore, sexuallyExplicit])
@@ -79,14 +81,7 @@ function App() {
           },
           value: {
             fontSize: '16px',
-          },
-          total: {
-            show: true,
-            label: 'Total',
-            formatter: function (w) {
-              // By default this function returns the average of all series. The below is just an example to show the use of custom formatter function
-              return 10
-            }
+            opacity: 0.5
           }
         }
       }
@@ -120,21 +115,12 @@ function App() {
         setComments(comments => [...comments, commentText])
       })
 
-      // sort comments to get median
+      // sort comments to get median later
       setToxicityScore(toxicityScore => toxicityScore.sort())
       setInsultScore(insultScore => insultScore.sort())
       setSexuallyExplicitScore(sexuallyExlicitScore => sexuallyExlicitScore.sort())
       setIdentityAttackScore(identityAttackScore => identityAttackScore.sort())
       setThreatScore(threatScore => threatScore.sort())
-
-      // const series = [
-      //   toxicitySum/numComments, 
-      //   insultSum/numComments, 
-      //   sexuallyExplicitSum/numComments, 
-      //   identityAttackSum/numComments, 
-      //   threatSum/numComments
-      // ]
-
     })
   }
 
@@ -145,7 +131,8 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <ExpenseEntryItem />
+      <p>Median</p>
       <div id="chart">
         <Chart 
           options={options} 
@@ -160,24 +147,21 @@ function App() {
           height={350} 
         />
       </div>
-        <p>
-          Welcome to YouTube comment section analysis 
-        </p> 
-        {/* <p>Average Scores</p>
-        <p>Toxicity {toxicityScore/numComments}</p>
-        <p>Insult {insultScore/numComments}</p>
-        <p>Sexually Explicit {sexuallyExplicitScore/numComments}</p>
-       <p>Identity Attack {identityAttackScore/numComments}</p>
-        <p>Threat {threatScore/numComments}</p> */}
-        <p>Average Scores</p>
-        <p>Toxicity {toxicityScore[Math.floor(numComments/2)]}</p>
-        <p>Insult {insultScore[Math.floor(numComments/2)]}</p>
-        <p>Sexually Explicit {sexuallyExplicitScore[Math.floor(numComments/2)]}</p>
-        <p>Identity Attack {identityAttackScore[Math.floor(numComments/2)]}</p>
-        <p>Threat {threatScore[Math.floor(numComments/2)]}</p>
-
-        
-      </header>
+      <p>Mean</p>
+      <div id="chart">
+        <Chart 
+          options={options} 
+          series={[
+            toxicitySum/numComments * 100,
+            insultSum/numComments * 100,
+            sexuallyExplicitSum/numComments * 100,
+            identityAttackSum/numComments * 100,
+            threatSum/numComments * 100
+          ]} 
+          type="radialBar" 
+          height={350} 
+        />
+      </div>
       <div className='container'>
         <form onSubmit={handleSubmit}>
           <h1>URL Form</h1>
