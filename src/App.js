@@ -1,10 +1,39 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-
 import youtube from './apis/youtube'
+import React from 'react';
+import axios from 'axios'
+
+export const PERSPECTIVE_API_URL =
+"https://commentanalyzer.googleapis.com/v1alpha1/comments:analyze?key=AIzaSyA5Ias9x-m6MyfClOkiY5gmQSQ2DKJQz7w";
 
 function App() {
+
+  const checkComment = comment => {
+    axios
+      .post(PERSPECTIVE_API_URL, {
+        comment: {
+          text: comment
+        },
+        languages: ["en"],
+        requestedAttributes: {
+          TOXICITY: {},
+          INSULT: {},
+          FLIRTATION: {},
+          THREAT: {}
+        }
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(() => {
+        // The perspective request failed, put some defensive logic here!
+      });
+  };
+
+  checkComment("shut up and go make me a sandwich stupid bitch")
+
+
 
   const [url, setUrl] = useState("")
   const [comments, setComments] = useState([])
@@ -19,6 +48,7 @@ function App() {
       }
     }).then(response => {
       let items = response.data.items
+      console.log(response)
       items.forEach(item => {
         const commentText = item.snippet.topLevelComment.snippet.textDisplay
         setComments(comments => [...comments, commentText])
@@ -27,8 +57,10 @@ function App() {
   }
 
   const commentList = comments.map((comment)=>{
-    return <li>{comment}</li>;
+    return <li key={comment}>{comment}</li>;
   })
+
+  
 
   return (
     <div className="App">
